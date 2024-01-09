@@ -17,10 +17,7 @@ public:
 			input >> start;
 			input >> end;
 
-			/*line* tmpLine = new line(name_, id_, start, end);*/
-		   myObjects[iterator] = new line(name_, id_, start, end);
-
-
+			myObjects[iterator] = new line(name_, id_, start, end);
 		}
 		else {
 
@@ -32,10 +29,7 @@ public:
 				input >> lenth;
 				input >> width;
 
-				///*object* obj = new rectangle(name_, id_, leftDownPoint, lenth, width);*/
-				//myObjects.push_back(new rectangle(name_, id_, leftDownPoint, lenth, width));
 				myObjects[iterator] = new rectangle(name_, id_, leftDownPoint, lenth, width);
-
 			}
 			else {
 
@@ -46,7 +40,6 @@ public:
 					input >> center;
 					input >> radius;
 
-					/*myObjects.push_back(new circle(name_, id_, center, radius));*/
 					myObjects[iterator] = new circle(name_, id_, center, radius);
 				}
 

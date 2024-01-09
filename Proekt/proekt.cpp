@@ -110,12 +110,7 @@ void line::print() const {
 rectangle::rectangle(const std::string& name_,const int id_, const vector2D& vector2D, const double lenth_, const double width_) 
 	: object(name_, id_), mLeftDownPoint(vector2D), mLenth(lenth_), mWidth(width_) 
 {
-	/*Point tochkitmp[4] = { a, b, c, d };
 
-	uporyadochenie(tochkitmp);
-	set_Koordinati_Vectorov();
-	Area();
-	Perimetr();*/
 }
 
 //void Rectangle::uporyadochenie(const Point arr[]) {

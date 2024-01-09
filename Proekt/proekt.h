@@ -86,17 +86,12 @@ public:
 	double getPerimetr() const { return 2 * mLenth + 2 * mWidth; };
 
 	void print() const override;
-	
+
 private:
 
 	vector2D mLeftDownPoint;
 
 	double mLenth, mWidth;
-
-	/*void uporyadochenie(const Point arr[]);
-	void set_Koordinati_Vectorov();
-	void Area();
-	void Perimetr();*/
 };
 
 

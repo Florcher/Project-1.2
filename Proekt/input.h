@@ -11,6 +11,8 @@ class input {
 
 public:
 
+	input() {};
+
 	void inputOf(std::istream& input, const int countOfObject, object** myObject) {
 
 		objectFactory factory;
@@ -75,13 +77,14 @@ struct inputOfConsole : public input {
 
 public:
 
-	std::istream input;
 
 	void inputObject(object** myObject, const int& countOfObject) override {
 
+		
+
 		std::string path = "file1.txt";
 
-		input::inputOf(input, countOfObject, myObject);
+		input::inputOf(std::cin, countOfObject, myObject);
 
 		std::ofstream fout;
 		fout.open(path, std::ofstream::app);
@@ -95,7 +98,7 @@ public:
 	void inputCountOfobject(int& countOfObject) override {
 
 		int countOfObject_;
-		input >> countOfObject_;
+		std::cin >> countOfObject_;
 		countOfObject = countOfObject_;
 	}
 };
