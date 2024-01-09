@@ -1,8 +1,11 @@
-#pragma once
+
+#ifndef __OBJECTFACTORY_H_
+#define __OBJECTFACTORY_H_
+
 #include <iostream>
 #include <vector>
 #include "proekt.h"
-
+#include "Factorys.h"
 
 class objectFactory {
 
@@ -10,44 +13,48 @@ public:
 
 	void createObject(std::istream& input, const std::string& name_, int id_, object** myObjects, const int iterator) {
 
+		abstractFactory* factory;
 
-		if (id_ == 1) {
+		switch (id_) 
+		{
+		case 1:
 
-			vector2D start, end;
-			input >> start;
-			input >> end;
+			factory = new lineFactory;
+			factory->create(input, name_, id_, myObjects, iterator);
+			delete factory;
+			break;
 
-			myObjects[iterator] = new line(name_, id_, start, end);
+		case 2:
+
+			factory = new rectangleFactory;
+			factory->create(input, name_, id_, myObjects, iterator);
+			delete factory;
+			break;
+
+		case 3:
+
+			factory = new circleFactory;
+			factory->create(input, name_, id_, myObjects, iterator);
+			delete factory;
+			break;
+
+		case 4:
+
+			factory = new polylineFactory;
+			factory->create(input, name_, id_, myObjects, iterator);
+			delete factory;
+			break;
+
+		default:
+			break;
 		}
-		else {
 
-			if (id_ == 2) {
-				vector2D leftDownPoint;
-				double width, lenth;
-
-				input >> leftDownPoint;
-				input >> lenth;
-				input >> width;
-
-				myObjects[iterator] = new rectangle(name_, id_, leftDownPoint, lenth, width);
-			}
-			else {
-
-				if (id_ == 3) {
-					vector2D center;
-					double radius;
-
-					input >> center;
-					input >> radius;
-
-					myObjects[iterator] = new circle(name_, id_, center, radius);
-				}
-
-			}
-		}
+		
 	}
 
 
 private:
 
 };
+
+#endif __OBJECTFACTORY_H_

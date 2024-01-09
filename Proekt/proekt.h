@@ -1,6 +1,10 @@
-#pragma once
+
+#ifndef __PROEKT_H_
+#define __PROEKT_H_
+
 #include <iostream>
 #include <string>
+#include <vector>
 
 struct vector2D {
 
@@ -117,3 +121,20 @@ private:
 	vector2D mCenter;
 	double mRadius;
 };
+
+class polyline : public object {
+
+public:
+
+	polyline();
+	polyline(const std::string&, const int, std::vector<vector2D>);
+  	
+	void print() const override;
+
+private:
+
+	std::vector<vector2D> Points;
+
+};
+
+#endif __PROEKT_H_

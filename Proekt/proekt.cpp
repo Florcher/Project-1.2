@@ -113,70 +113,6 @@ rectangle::rectangle(const std::string& name_,const int id_, const vector2D& vec
 
 }
 
-//void Rectangle::uporyadochenie(const Point arr[]) {
-//
-//	int iterator = 0;
-//
-//	double xmin = arr[0].x;
-//	double ymin = arr[0].y;
-//	for (int i = 1; i < 4; i++) {
-//		if (arr[i].x < xmin && arr[i].y < ymin) {
-//			iterator = i;
-//		}
-//	}
-//
-//	tochki[0].x = arr[iterator].x;
-//	tochki[0].y = arr[iterator].y;
-//
-//	for (int i = 0; i < 4; i++) {
-//		if (arr[i].x == tochki[0].x && arr[i].y > tochki[0].y) {
-//			iterator = i;
-//		}
-//	}
-//
-//	tochki[1].x = arr[iterator].x;
-//	tochki[1].y = arr[iterator].y;
-//
-//	for (int i = 0; i < 4; i++) {
-//		if ((arr[i].x != tochki[0].x) && (arr[i].y != tochki[0].y)) {
-//			iterator = i;
-//		}
-//	}
-//
-//	tochki[2].x = arr[iterator].x;
-//	tochki[2].y = arr[iterator].y;
-//
-//	for (int i = 0; i < 4; i++) {
-//		if (arr[i].y == tochki[0].y && arr[i].x > tochki[0].x) {
-//			iterator = i;
-//		}
-//	}
-//
-//	tochki[3].x = arr[iterator].x;
-//	tochki[3].y = arr[iterator].y;
-//
-//}
-
-//void Rectangle::set_Koordinati_Vectorov() {
-//
-//	Line line_of_storoni[4];
-//	Line AB{ "AB", 1, tochki[0], tochki[1] };
-//	Line BC{ "BC", 2, tochki[1], tochki[2] };
-//	Line CD{ "CD", 3, tochki[2], tochki[3] };
-//	Line DA{ "DA", 4, tochki[3], tochki[0] };
-//
-//	line_of_storoni[0] = AB;
-//	line_of_storoni[1] = BC;
-//	line_of_storoni[2] = CD;
-//	line_of_storoni[3] = DA;
-//
-//	for (int i = 0; i < 4; i++) {
-//		koordinatyVectorov[i].x = line_of_storoni[i].getKoordinataX();
-//		koordinatyVectorov[i].y = line_of_storoni[i].getKoordinataY();
-//	}
-//
-//}
-
 void rectangle::print() const {
 
 	object::print();
@@ -230,9 +166,46 @@ void circle::print() const {
 
 	std::cout << "Center = " << mCenter;
 	std::cout << "radius = " << mRadius << std::endl;
+	std::cout << "area = " << getArea() << std::endl;
 
 	for (int i = 0; i < arrOfPoints.size() - 1; i++) {
 		arrOfvector[i].print();
+	}
+
+}
+
+polyline::polyline() {
+
+}
+
+polyline::polyline(const std::string& name_, const int id_, std::vector<vector2D> arrOfPoints_)
+	: object(name_, id_) 
+{
+	for (int i = 0; i < arrOfPoints_.size(); i++)
+		Points.push_back(arrOfPoints_[i]);
+}
+
+void polyline::print() const {
+
+	object::print();
+
+	std::cout << "count of points " << Points.size() << std::endl;
+
+	std::vector<line> arrOfVectors;
+	line tmpVector;
+
+	for (int i = 0; i < Points.size() - 1; i++) {
+
+		tmpVector.setName("vector");
+		tmpVector.setIndex(i);
+		tmpVector.setStart(Points[i]);
+		tmpVector.setEnd(Points[i + 1]);
+
+		arrOfVectors.push_back(tmpVector);
+	}
+
+	for (int i = 0; i < arrOfVectors.size(); i++) {
+		arrOfVectors[i].print();
 	}
 
 }

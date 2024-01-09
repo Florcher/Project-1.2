@@ -1,4 +1,7 @@
-#pragma once
+
+#ifndef __INPUT_H_
+#define __INPUT_H_
+
 #include <iostream>
 #include "proekt.h"
 #include <fstream>
@@ -6,12 +9,12 @@
 #include <math.h>
 #include <vector>
 #include "objectFactory.h"
+#include <stdio.h>
+
 
 class input {
 
 public:
-
-	input() {};
 
 	void inputOf(std::istream& input, const int countOfObject, object** myObject) {
 
@@ -44,9 +47,11 @@ struct inputOfFile : public input {
 
 public:
 
-	std::ifstream input;
+	
 
 	void inputObject(object** myObject, const int& countOfObject) override {
+
+		std::ifstream input;
 
 		std::string path = "file.txt";
 		input.open(path);
@@ -60,6 +65,8 @@ public:
 	}
 	
 	void inputCountOfobject(int& countOfObject) override {
+
+		std::ifstream input;
 
 		std::string path = "file.txt";
 		input.open(path);
@@ -79,8 +86,6 @@ public:
 
 
 	void inputObject(object** myObject, const int& countOfObject) override {
-
-		
 
 		std::string path = "file1.txt";
 
@@ -102,3 +107,56 @@ public:
 		countOfObject = countOfObject_;
 	}
 };
+
+struct inputOfBinaryFile : public input {
+
+
+	void inputObject(object** myObject, const int& countOfObject) override {
+
+		std::string path = "file1.txt";
+
+		std::ifstream fin;
+		fin.open(path);
+
+		object obj;
+
+		for (int i = 0; i < countOfObject; i++) {
+
+			fin.read((char*)&obj, sizeof(obj));
+
+			switch (obj.getindex()) {
+
+			case 1:
+				fin.read((char*)&myObject[i], sizeof(line));
+				break;
+			case 2:
+				fin.read((char*)&myObject[i], sizeof(rectangle));
+				break;
+			case 3:
+				fin.read((char*)&myObject[i], sizeof(circle));
+				break;
+
+			default:
+				break;
+			}
+		}
+	}
+
+	void inputCountOfobject(int& countOfObject) override {
+
+		std::string path = "file1.txt";
+
+		std::ifstream fin;
+		fin.open(path);
+
+		int countOfobject_;
+
+		fin.read((char*)&countOfobject_, sizeof(int));
+
+		countOfObject = countOfobject_;
+	}
+
+};
+
+
+#endif __INPUT_H__

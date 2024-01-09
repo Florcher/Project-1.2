@@ -19,9 +19,8 @@ int main() {
 
 
 
-	input* in = new inputOfConsole;
+	input* in = new inputOfFile;
 
-	std::cout << "Введите количество объектов" << std::endl;
 
 	in->inputCountOfobject(iterator);
 

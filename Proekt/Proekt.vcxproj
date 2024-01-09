@@ -131,6 +131,7 @@
     <ClCompile Include="proekt.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Factorys.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="objectFactory.h" />
     <ClInclude Include="proekt.h" />
