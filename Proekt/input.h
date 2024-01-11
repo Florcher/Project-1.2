@@ -113,47 +113,43 @@ struct inputOfBinaryFile : public input {
 
 	void inputObject(object** myObject, const int& countOfObject) override {
 
-		std::string path = "file1.txt";
-
-		std::ifstream fin;
-		fin.open(path);
-
-		object obj;
+		int countOfObject_;
+		std::ifstream fin("file2.txt", std::ios_base::binary);
+		fin.read((char*)&countOfObject_, 4);
 
 		for (int i = 0; i < countOfObject; i++) {
 
-			fin.read((char*)&obj, sizeof(obj));
-
-			switch (obj.getindex()) {
-
-			case 1:
-				fin.read((char*)&myObject[i], sizeof(line));
-				break;
-			case 2:
-				fin.read((char*)&myObject[i], sizeof(rectangle));
-				break;
-			case 3:
-				fin.read((char*)&myObject[i], sizeof(circle));
-				break;
-
-			default:
-				break;
+			std::vector<char> sym;
+			sym.push_back('A');
+			int iterator = 0;
+			while (sym[iterator] != '\0') {
+				char tmpSym;
+				iterator++;
+				fin.read((char*)&tmpSym, 1);
+				sym.push_back(tmpSym);
 			}
+
+
+			std::string name;
+			for (int i = 1; i < iterator; i++) {
+				name.push_back(sym[i]);
+			}
+
+			int id;
+			fin.read((char*)&id, 4);
+
+			objectBinaryFactory binarryFactor;
+			binarryFactor.createObject(fin, name, id, myObject, i);
+
 		}
+		
+		fin.close();
 	}
 
 	void inputCountOfobject(int& countOfObject) override {
 
-		std::string path = "file1.txt";
-
-		std::ifstream fin;
-		fin.open(path);
-
-		int countOfobject_;
-
-		fin.read((char*)&countOfobject_, sizeof(int));
-
-		countOfObject = countOfobject_;
+		std::ifstream fin("file2.txt", std::ios_base::binary);
+		fin.read((char*)&countOfObject, 4);
 	}
 
 };

@@ -7,6 +7,7 @@
 #include "proekt.h"
 #include "Factorys.h"
 
+
 class objectFactory {
 
 public:
@@ -50,6 +51,59 @@ public:
 		}
 
 		
+	}
+
+
+private:
+
+};
+
+
+
+class objectBinaryFactory {
+
+
+public:
+
+	void createObject(std::istream& input, const std::string& name_, int id_, object** myObjects, const int iterator) {
+
+		abstructBinaryFactory* binaryFactory;
+
+		switch (id_)
+		{
+		case 1:
+
+			binaryFactory = new lineBinaryFactory;
+			binaryFactory->create(input, name_, id_, myObjects, iterator);
+			delete binaryFactory;
+			break;
+
+		case 2:
+
+			binaryFactory = new rectangleBinaryFactory;
+			binaryFactory->create(input, name_, id_, myObjects, iterator);
+			delete binaryFactory;
+			break;
+
+		case 3:
+
+			binaryFactory = new circleBinaryFactory;
+			binaryFactory->create(input, name_, id_, myObjects, iterator);
+			delete binaryFactory;
+			break;
+
+		case 4:
+
+			binaryFactory = new polylinBinaryFactory;
+			binaryFactory->create(input, name_, id_, myObjects, iterator);
+			delete binaryFactory;
+			break;
+
+		default:
+			break;
+		}
+
+
 	}
 
 
