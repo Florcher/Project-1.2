@@ -20,7 +20,7 @@ public:
 	void inputOf(std::istream& input, const int countOfObject, object** myObject) {
 
 		objectFactory factory;
-		inputChoice inputObject;
+		inputBuffer inputObject;
 
 		for (int i = 0; i < countOfObject; i++) {
 
@@ -103,7 +103,7 @@ struct inputOfBinaryFile : public input {
 
 	void inputObject(object** myObject, const int& countOfObject) override {
 
-		inputBinaryChoice inputBinary;
+		inputBinaryBuffer inputBinary;
 		objectFactory binarryFactor;
 
 		int countOfObject_;
@@ -112,28 +112,7 @@ struct inputOfBinaryFile : public input {
 
 		for (int i = 0; i < countOfObject; i++) {
 
-			
-		
-			std::vector<char> sym;
-			sym.push_back('A');
-			int iterator = 0;
-			while (sym[iterator] != '\0') {
-				char tmpSym;
-				iterator++;
-				fin.read((char*)&tmpSym, 1);
-				sym.push_back(tmpSym);
-			}
-
-			std::string name;
-			for (int i = 1; i < iterator; i++) {
-
-				name.push_back(sym[i]);
-			};
-
-			int id;
-			fin.read((char*)&id, 4);
-
-			inputBinary.input(fin, name, id);
+			inputBinary.input(fin);
 			binarryFactor.createObject(inputBinary, myObject, i);
 
 		}

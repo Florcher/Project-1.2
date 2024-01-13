@@ -69,7 +69,7 @@ int main() {
 
 	createBinaryObject();
 
-	/*input* in = new inputOfBinaryFile;
+	input* in = new inputOfBinaryFile;
 
 
 	int countOfObject;
@@ -85,10 +85,10 @@ int main() {
 
 	for (int i = 0; i < countOfObject; i++) {
 		objects[i]->print();
-	}*/
+	}
 
 
-	int countOfObject;
+	/*int countOfObject;
 
 	input* in = new inputOfFile;
 
@@ -101,7 +101,7 @@ int main() {
 
 	for (int i = 0; i < countOfObject; i++) {
 		objects[i]->print();
-	}
+	}*/
 
 
 

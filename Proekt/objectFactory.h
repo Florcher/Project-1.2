@@ -13,9 +13,9 @@ class objectFactory {
 
 public:
 
-	void createObject(inputCHOICE& inputobject, object** myObjects, const int iterator) {
+	void createObject(buffer& inputobject, object** myObjects, const int iterator) {
 
-		abstractFactory* factory;
+		factory* factory;
 
 		switch (inputobject.getId()) 
 		{

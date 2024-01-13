@@ -9,23 +9,17 @@
 #include "inputChoice.h"
 #include "inputObject.h"
 
-struct Factory {
-	virtual void create(inputCHOICE& inputobject, object** myObjects, const int iterator)
+struct factory {
+	virtual void create(buffer& inputobject, object** myObjects, const int iterator)
 	{
 
 	}
 
 };
 
+struct lineFactory : public factory {
 
-struct abstractFactory : public Factory {
-
-};
-
-
-struct lineFactory : public abstractFactory {
-
-	void create(inputCHOICE& inputobject, object** myObjects, const int iterator) override
+	void create(buffer& inputobject, object** myObjects, const int iterator) override
 	{
 		std::string name = inputobject.getName();
 		int id = inputobject.getId();
@@ -38,9 +32,9 @@ struct lineFactory : public abstractFactory {
 };
 
 
-struct rectangleFactory : public abstractFactory {
+struct rectangleFactory : public factory {
 
-	void create(inputCHOICE& inputobject, object** myObjects, const int iterator) override
+	void create(buffer& inputobject, object** myObjects, const int iterator) override
 	{
 		std::string name = inputobject.getName();
 		int id = inputobject.getId();
@@ -53,9 +47,9 @@ struct rectangleFactory : public abstractFactory {
 };
 
 
-struct circleFactory : public abstractFactory {
+struct circleFactory : public factory {
 
-	void create(inputCHOICE& inputobject, object** myObjects, const int iterator) override
+	void create(buffer& inputobject, object** myObjects, const int iterator) override
 	{
 		std::string name = inputobject.getName();
 		int id = inputobject.getId();
@@ -67,9 +61,9 @@ struct circleFactory : public abstractFactory {
 };
 
 
-struct polylineFactory : public abstractFactory {
+struct polylineFactory : public factory {
 
-	void create(inputCHOICE& inputobject, object** myObjects, const int iterator) override
+	void create(buffer& inputobject, object** myObjects, const int iterator) override
 	{
 		std::string name = inputobject.getName();
 		int id = inputobject.getId();

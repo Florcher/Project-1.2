@@ -8,7 +8,9 @@
 #include "inputObject.h"
 
 
-struct inputCHOICE {
+struct buffer {
+
+	virtual void input(std::istream& input) {};
 
 	const std::string& getName() { return mName; };
 	const int getId() { return mId; };
@@ -23,12 +25,12 @@ struct inputCHOICE {
 
 
 
-class inputChoice : public inputCHOICE {
+class inputBuffer : public buffer {
 
 public:
 
 
-	void input(std::istream& input) {
+	void input(std::istream& input) override {
 
 		input >> mName;
 		input >> mId;
@@ -80,14 +82,29 @@ private:
 
 
 
-class inputBinaryChoice : public inputCHOICE {
+class inputBinaryBuffer : public buffer {
 
 public:
 
-	void input(std::ifstream& fin, const std::string name_, const int id) {
+	void input(std::istream& fin) override {
 
-		mId = id;
-		mName = name_;
+		std::vector<char> sym;
+		sym.push_back('A');
+		int iterator = 0;
+		while (sym[iterator] != '\0') {
+			char tmpSym;
+			iterator++;
+			fin.read((char*)&tmpSym, 1);
+			sym.push_back(tmpSym);
+		}
+
+		mName = "";
+		for (int i = 1; i < iterator; i++) {
+
+			mName.push_back(sym[i]);
+		};
+
+		fin.read((char*)&mId, 4);
 
 			inputBinary* inputobject;
 
