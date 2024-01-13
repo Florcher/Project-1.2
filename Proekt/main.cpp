@@ -65,17 +65,17 @@ int main() {
 
 	setlocale(LC_ALL, "ru");
 
-	
+
 
 	createBinaryObject();
 
-	input* in = new inputOfBinaryFile;
-	
+	/*input* in = new inputOfBinaryFile;
+
 
 	int countOfObject;
 	in->inputCountOfobject(countOfObject);
 
-	
+
 	object** objects = new object * [countOfObject];
 
 
@@ -85,25 +85,25 @@ int main() {
 
 	for (int i = 0; i < countOfObject; i++) {
 		objects[i]->print();
-	}
+	}*/
 
 
-	/*int iterator;
+	int countOfObject;
 
 	input* in = new inputOfFile;
 
-	in->inputCountOfobject(iterator);
+	in->inputCountOfobject(countOfObject);
 
-	object** objects = new object * [iterator];
+	object** objects = new object * [countOfObject];
 
-	in->inputObject(objects, iterator);
+	in->inputObject(objects, countOfObject);
 
 
-	for (int i = 0; i < iterator; i++) {
+	for (int i = 0; i < countOfObject; i++) {
 		objects[i]->print();
 	}
-	
-	*/
+
+
 
 
 	for (int i = 0; i < countOfObject; i++) {
@@ -111,8 +111,8 @@ int main() {
 	}
 
 	delete[] objects;
-	
-	
+
+
 	return 0;
-}
+};
 

@@ -6,10 +6,11 @@
 #include <string>
 #include "proekt.h"
 #include <vector>
-
+#include "inputChoice.h"
+#include "inputObject.h"
 
 struct Factory {
-	virtual void create(std::istream& input, const std::string& name_, int id_, object** myObjects, const int iterator)
+	virtual void create(inputCHOICE& inputobject, object** myObjects, const int iterator)
 	{
 
 	}
@@ -24,13 +25,14 @@ struct abstractFactory : public Factory {
 
 struct lineFactory : public abstractFactory {
 
-	void create(std::istream& input, const std::string& name_, int id_, object** myObjects, const int iterator) override
+	void create(inputCHOICE& inputobject, object** myObjects, const int iterator) override
 	{
-		vector2D start, end;
-		input >> start;
-		input >> end;
+		std::string name = inputobject.getName();
+		int id = inputobject.getId();
+		vector2D start = inputobject.getArrOfPoints()[0];
+		vector2D end = inputobject.getArrOfPoints()[1];
 
-		myObjects[iterator] = new line(name_, id_, start, end);
+		myObjects[iterator] = new line(name, id, start, end);
 	}
 
 };
@@ -38,129 +40,101 @@ struct lineFactory : public abstractFactory {
 
 struct rectangleFactory : public abstractFactory {
 
-	void create(std::istream& input, const std::string& name_, int id_, object** myObjects, const int iterator) override
+	void create(inputCHOICE& inputobject, object** myObjects, const int iterator) override
 	{
-		vector2D leftDownPoint;
-		double width, lenth;
+		std::string name = inputobject.getName();
+		int id = inputobject.getId();
+		vector2D leftDownPoint = inputobject.getArrOfPoints()[0];
+		double lenth = inputobject.getOptions()[0];
+		double width = inputobject.getOptions()[1];
 
-		input >> leftDownPoint;
-		input >> lenth;
-		input >> width;
-
-		myObjects[iterator] = new rectangle(name_, id_, leftDownPoint, lenth, width);
+		myObjects[iterator] = new rectangle(name, id, leftDownPoint, lenth, width);
 	}
 };
 
 
 struct circleFactory : public abstractFactory {
 
-	void create(std::istream& input, const std::string& name_, int id_, object** myObjects, const int iterator) override
+	void create(inputCHOICE& inputobject, object** myObjects, const int iterator) override
 	{
-		vector2D center;
-		double radius;
+		std::string name = inputobject.getName();
+		int id = inputobject.getId();
+		vector2D center = inputobject.getArrOfPoints()[0];
+		double radius = inputobject.getOptions()[0];
 
-		input >> center;
-		input >> radius;
-
-		myObjects[iterator] = new circle(name_, id_, center, radius);
+		myObjects[iterator] = new circle(name, id, center, radius);
 	}
 };
 
 
 struct polylineFactory : public abstractFactory {
 
-	void create(std::istream& input, const std::string& name_, int id_, object** myObjects, const int iterator) override
+	void create(inputCHOICE& inputobject, object** myObjects, const int iterator) override
 	{
-		int countOfPoints;
-		input >> countOfPoints;
+		std::string name = inputobject.getName();
+		int id = inputobject.getId();
 
-		std::vector<vector2D> arrOfPoints(countOfPoints);
-
-		for (int i = 0; i < countOfPoints; i++) {
-			input >> arrOfPoints[i];
-		}
-
-		myObjects[iterator] = new polyline(name_, id_, arrOfPoints);
+		myObjects[iterator] = new polyline(name, id, inputobject.getArrOfPoints());
 	}
 };
 
 
 
-struct abstructBinaryFactory : Factory {
-
-};
 
 
-struct lineBinaryFactory : public abstructBinaryFactory {
-
-    void create(std::istream& input, const std::string& name_, const int id_, object** myObjects, const int iterator) override
-	{
-		vector2D start, end;
-
-		input.read((char*)&start.x, 8);
-		input.read((char*)&start.y, 8);
-		input.read((char*)&end.x, 8);
-		input.read((char*)&end.y, 8);
-
-		myObjects[iterator] = new line(name_, id_, start, end);
-	}
-
-};
-
-
-struct rectangleBinaryFactory : public abstructBinaryFactory {
-
-	void create(std::istream& input, const std::string& name_, const int id_, object** myObjects, const int iterator) override
-	{
-		vector2D leftdownPoint;
-		double lenth, width;
-
-		input.read((char*)&leftdownPoint.x, 8);
-		input.read((char*)&leftdownPoint.y, 8);
-		input.read((char*)&lenth, sizeof(double));
-		input.read((char*)&width, sizeof(double));
-
-		myObjects[iterator] = new rectangle(name_, id_, leftdownPoint, lenth, width);
-	}
-
-};
-
-
-struct circleBinaryFactory : public abstructBinaryFactory {
-
-	void create(std::istream& input, const std::string& name_, const int id_, object** myObjects, const int iterator) override
-	{
-		vector2D center;
-		double radius;
-
-		input.read((char*)&center.x, 8);
-		input.read((char*)&center.y, 8);
-		input.read((char*)&radius, sizeof(double));
-
-		myObjects[iterator] = new circle(name_, id_, center, radius);
-	}
-
-};
-
-
-struct polylinBinaryFactory : public abstructBinaryFactory {
-
-	void create(std::istream& input, const std::string& name_, const int id_, object** myObjects, const int iterator) override
-	{
-		int countOfPoints;
-		input.read((char*)&countOfPoints, 4);
-
-		std::vector<vector2D> arrOfPoints(countOfPoints);
-
-		for (int i = 0; i < countOfPoints; i++) {
-			input.read((char*)&arrOfPoints[i].x, 8);
-			input.read((char*)&arrOfPoints[i].y, 8);
-		}
-
-		myObjects[iterator] = new polyline(name_, id_, arrOfPoints);
-	}
-
-};
+//struct abstructBinaryFactory{
+//	virtual void create(std::istream& input, const std::string& name_, int id_, object** myObjects, const int iterator)
+//	{
+//
+//	}
+//
+//};
+//
+//
+//struct lineBinaryFactory : public abstructBinaryFactory {
+//
+//    void create(std::istream& input, const std::string& name_, const int id_, object** myObjects, const int iterator) override
+//	{
+//
+//
+//
+//		myObjects[iterator] = new line(name_, id_, start, end);
+//	}
+//
+//};
+//
+//
+//struct rectangleBinaryFactory : public abstructBinaryFactory {
+//
+//	void create(std::istream& input, const std::string& name_, const int id_, object** myObjects, const int iterator) override
+//	{
+//
+//		myObjects[iterator] = new rectangle(name_, id_, leftdownPoint, lenth, width);
+//	}
+//
+//};
+//
+//
+//struct circleBinaryFactory : public abstructBinaryFactory {
+//
+//	void create(std::istream& input, const std::string& name_, const int id_, object** myObjects, const int iterator) override
+//	{
+//		myObjects[iterator] = new circle(name_, id_, center, radius);
+//	}
+//
+//};
+//
+//
+//struct polylinBinaryFactory : public abstructBinaryFactory {
+//
+//	void create(std::istream& input, const std::string& name_, const int id_, object** myObjects, const int iterator) override
+//	{
+//	
+//
+//		myObjects[iterator] = new polyline(name_, id_, arrOfPoints);
+//	}
+//
+//};
 
 
 #endif __FACTORYS_H_

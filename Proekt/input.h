@@ -10,7 +10,8 @@
 #include <vector>
 #include "objectFactory.h"
 #include <stdio.h>
-
+#include "inputChoice.h"
+#include "inputObject.h"
 
 class input {
 
@@ -19,15 +20,12 @@ public:
 	void inputOf(std::istream& input, const int countOfObject, object** myObject) {
 
 		objectFactory factory;
-
-		std::vector<std::string> arrOfNameOfObject(countOfObject);
-		std::vector<int> arrOfIndexOfObject(countOfObject);
+		inputChoice inputObject;
 
 		for (int i = 0; i < countOfObject; i++) {
-			input >> arrOfNameOfObject[i];
-			input >> arrOfIndexOfObject[i];
 
-			factory.createObject(input, arrOfNameOfObject[i], arrOfIndexOfObject[i], myObject, i);
+			inputObject.input(input);
+			factory.createObject(inputObject, myObject, i);
 		}
 
 	}
@@ -90,14 +88,6 @@ public:
 		std::string path = "file1.txt";
 
 		input::inputOf(std::cin, countOfObject, myObject);
-
-		std::ofstream fout;
-		fout.open(path, std::ofstream::app);
-
-		for (int i = 0; i < countOfObject; i++) {
-			fout.write((char*)&myObject[i], sizeof(myObject));
-
-		}
 	}
 
 	void inputCountOfobject(int& countOfObject) override {
@@ -113,12 +103,17 @@ struct inputOfBinaryFile : public input {
 
 	void inputObject(object** myObject, const int& countOfObject) override {
 
+		inputBinaryChoice inputBinary;
+		objectFactory binarryFactor;
+
 		int countOfObject_;
 		std::ifstream fin("file2.txt", std::ios_base::binary);
 		fin.read((char*)&countOfObject_, 4);
 
 		for (int i = 0; i < countOfObject; i++) {
 
+			
+		
 			std::vector<char> sym;
 			sym.push_back('A');
 			int iterator = 0;
@@ -129,21 +124,21 @@ struct inputOfBinaryFile : public input {
 				sym.push_back(tmpSym);
 			}
 
-
 			std::string name;
 			for (int i = 1; i < iterator; i++) {
+
 				name.push_back(sym[i]);
-			}
+			};
 
 			int id;
 			fin.read((char*)&id, 4);
 
-			objectBinaryFactory binarryFactor;
-			binarryFactor.createObject(fin, name, id, myObject, i);
+			inputBinary.input(fin, name, id);
+			binarryFactor.createObject(inputBinary, myObject, i);
 
 		}
 		
-		fin.close();
+		
 	}
 
 	void inputCountOfobject(int& countOfObject) override {
