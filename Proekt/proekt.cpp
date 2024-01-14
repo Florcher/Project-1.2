@@ -7,7 +7,7 @@
 
 std::ostream& operator<< (std::ostream& output, const vector2D& vector2D) {
 
-	output << "(" << vector2D.x << ", " << vector2D.y << ")" << std::endl;
+	output << "(" << vector2D.x << ", " << vector2D.y << ")";
 
 	return output;
 }
@@ -100,10 +100,7 @@ void line::print() const {
 
 	vector2D dir;
 
-	dir.x = mEnd.x - mStart.x;
-	dir.y = mEnd.y - mStart.y;
-
-	std::cout << dir;
+	std::cout << mEnd << " " << mStart << std::endl;;
 }
 
 
@@ -117,9 +114,33 @@ void rectangle::print() const {
 
 	object::print();
 
-	std::cout << "left down point: " << mLeftDownPoint;
+	std::cout << "left down point: " << mLeftDownPoint << std::endl;
 	std::cout << "lenth = " << mLenth << std::endl;
 	std::cout << "width = " << mWidth << std::endl;
+
+
+	vector2D leftUpPoint;
+	leftUpPoint.x = mLeftDownPoint.x;
+	leftUpPoint.y = mLeftDownPoint.y + mWidth;
+	line ab{ "vector AB", 1, mLeftDownPoint, leftUpPoint };
+
+	vector2D rightUpPoint;
+	rightUpPoint.x = mLeftDownPoint.x + mLenth;
+	rightUpPoint.y = mLeftDownPoint.y + mWidth;
+	line bc{ "vector BC", 2, leftUpPoint, rightUpPoint };
+
+	vector2D rightDownPoint;
+	rightDownPoint.x = mLeftDownPoint.x + mLenth;
+	rightDownPoint.y = mLeftDownPoint.y;
+	line cd{"vector CD", 3, rightUpPoint, rightDownPoint};
+
+	line da{ "vector DA", 4, rightDownPoint, mLeftDownPoint };
+	
+	ab.print();
+	bc.print();
+	cd.print();
+	da.print();
+
 	std::cout << "perimetr = " << getPerimetr() << std::endl;
 	std::cout << "area = " << getArea() << std::endl;
 	
@@ -164,7 +185,7 @@ void circle::print() const {
 
 	object::print();
 
-	std::cout << "Center = " << mCenter;
+	std::cout << "Center = " << mCenter << std::endl;
 	std::cout << "radius = " << mRadius << std::endl;
 	std::cout << "area = " << getArea() << std::endl;
 
