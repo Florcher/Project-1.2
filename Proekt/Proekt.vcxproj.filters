@@ -35,11 +35,5 @@
     <ClInclude Include="Factorys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inputObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inputChoice.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

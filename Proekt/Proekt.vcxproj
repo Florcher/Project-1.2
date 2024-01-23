@@ -133,8 +133,6 @@
   <ItemGroup>
     <ClInclude Include="Factorys.h" />
     <ClInclude Include="input.h" />
-    <ClInclude Include="inputChoice.h" />
-    <ClInclude Include="inputObject.h" />
     <ClInclude Include="objectFactory.h" />
     <ClInclude Include="proekt.h" />
   </ItemGroup>

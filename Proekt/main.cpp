@@ -65,54 +65,19 @@ int main() {
 
 	setlocale(LC_ALL, "ru");
 
-
-
 	createBinaryObject();
 
+
 	input* in = new inputOfBinaryFile;
+	std::vector<object*> objects;
 
 
-	int countOfObject;
-	in->inputCountOfobject(countOfObject);
+	in->inputObject(objects);
 
-
-	object** objects = new object * [countOfObject];
-
-
-	in->inputObject(objects, countOfObject);
-
-
-
-	for (int i = 0; i < countOfObject; i++) {
+	for (int i = 0; i < objects.size(); i++){
 		objects[i]->print();
 	}
-
-
-	/*int countOfObject;
-
-	input* in = new inputOfFile;
-
-	in->inputCountOfobject(countOfObject);
-
-	object** objects = new object * [countOfObject];
-
-	in->inputObject(objects, countOfObject);
-
-
-	for (int i = 0; i < countOfObject; i++) {
-		objects[i]->print();
-	}*/
-
-
-
-
-	for (int i = 0; i < countOfObject; i++) {
-		delete objects[i];
-	}
-
-	delete[] objects;
-
 
 	return 0;
-};
+}
 

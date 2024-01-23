@@ -11,6 +11,7 @@ std::ostream& operator<< (std::ostream& output, const vector2D& vector2D) {
 
 	return output;
 }
+
  std::istream& operator>> (std::istream& input, vector2D& vector2D) {
 
 	 input >> vector2D.x;
@@ -19,98 +20,191 @@ std::ostream& operator<< (std::ostream& output, const vector2D& vector2D) {
 	 return input;
 }
 
-vector2D& vector2D::operator+(const vector2D& rhs) {
+vector2D vector2D::operator+(const vector2D& rhs) {
 
-	vector2D tmpVector = *this;
-	tmpVector.x = tmpVector.x + rhs.x;
-	tmpVector.y = tmpVector.y + rhs.y;
-
-	return tmpVector;
-
+	return { x + rhs.x, y + rhs.y };
 }
 
-vector2D& vector2D::operator-(const vector2D& rhs) {
+vector2D vector2D::operator-(const vector2D& rhs) {
 
-	vector2D tmpVector = *this;
-	tmpVector.x = tmpVector.x - rhs.x;
-	tmpVector.y = tmpVector.y - rhs.y;
-
-	return tmpVector;
-
-}
-
-const vector2D& vector2D::operator=(const vector2D& rhs) {
-
-	if (this != &rhs) {
-		this->x = rhs.x;
-		this->y = rhs.y;
-
-		return *this;
-	}
-
-	return *this;
+	return { x - rhs.x, y - rhs.y };
 }
 
 
-line::line() {
+object::object(const std::string& name, const int id) : mName(name), mId(id) {
+
+}
+
+void object::print() { 
 	
+	std::cout << mName << std::endl << mId << std::endl;
 }
 
-line::line(const std::string& name_, const int id_, const vector2D& start_, const vector2D& end_) 
-	: object(name_, id_), mStart(start_), mEnd(end_){
+
+void object::setName(const std::string& name){
+     
+	mName = name;
+}
+void object::setId(const int id){
+	
+	mId = id;
+}
+
+std::string object::getName() const { 
+	
+	return mName;
+}
+
+int object::getindex() const { 
+	
+	return mId;
+}
+
+void object::binaryInput(std::istream& input) {
+
+	std::vector<char> sym;
+	sym.push_back('A');
+	int iterator = 0;
+	while (sym[iterator] != '\0') {
+			char tmpSym;
+			iterator++;
+			input.read((char*)&tmpSym, 1);
+			sym.push_back(tmpSym);
+		}
+
+	mName = "";
+		for (int i = 1; i < iterator; i++) {
+	     mName.push_back(sym[i]);
+		};
+	
+	input.read((char*)&mId, 4);
+}
+
+void object::input(std::istream& input) {
+
+	input >> mName;
+	input >> mId;
+
+ }
+
+Line::Line(const std::string& name_, const int id_, const vector2D& start_, const vector2D& end_) 
+	: object(name_, id_), mStart(start_), mEnd(end_)
+{
 
 }
 
-double line::getModul() const {
+double Line::getLenth() {
 
-	vector2D dir;
-
-	dir.x = mEnd.x - mStart.x;
-	dir.y = mEnd.y - mStart.y;
+    vector2D dir = mEnd - mStart;
 
 	return sqrt(dir.x * dir.x + dir.y * dir.y);
 }
 
-line::line(const line& rhs) {
-
-	this->setName(rhs.getName());
-	this->setIndex(rhs.getindex());
-	this->mStart = rhs.getStart();
-	this->mEnd = rhs.getEnd();
+void Line::setStart(const vector2D& start) { 
 	
+	mStart = start; 
+};
+
+void Line::setEnd(const vector2D& end) { 
+	
+	mEnd = end;
+};
+
+vector2D Line::getStart() const { 
+	
+	return mStart; 
+};
+
+vector2D Line::getEnd() const { 
+	
+	return mEnd; 
+};
+
+void Line::binaryInput(std::istream& input) {
+
+	input.read((char*)&mStart.x, 8);
+	input.read((char*)&mStart.y, 8);
+	input.read((char*)&mEnd.x, 8);
+	input.read((char*)&mEnd.y, 8);
 }
-const line& line::operator= (const line& rhs) {
 
-	if (this != &rhs) {
+void Line::input(std::istream& input) {
 
-		this->setName(rhs.getName());
-		this->setIndex(rhs.getindex());
-		this->mStart = rhs.getStart();
-		this->mEnd = rhs.getEnd();
-
-		return *this;
-	}
-
-	return *this;
+	input >> mStart;
+	input >> mEnd;
 }
 
-void line::print() const {
+void Line::print() {
 
 	object::print();
 
-	vector2D dir;
-
-	std::cout << mEnd << " " << mStart << std::endl;;
+	std::cout << mEnd << " " << mStart << std::endl;
 }
 
 
-rectangle::rectangle(const std::string& name_,const int id_, const vector2D& vector2D, const double lenth_, const double width_) 
+Rectangle::Rectangle(const std::string& name_,const int id_, const vector2D& vector2D, const double lenth_, const double width_) 
 	: object(name_, id_), mLeftDownPoint(vector2D), mLenth(lenth_), mWidth(width_) 
 {
 
 }
 
-void rectangle::print() const {
+void Rectangle::setLeftDownPoint(const vector2D& vector2D) { 
+	
+	mLeftDownPoint = vector2D; 
+};
+
+void Rectangle::setLenth(const int& lenth) {
+	
+	mLenth = lenth;
+};
+
+void Rectangle::setWidth(const int& width) {
+	
+	mWidth = width; 
+};
+
+vector2D Rectangle::getLeftDownPoint() {
+	
+	return mLeftDownPoint; 
+};
+
+double Rectangle::getLenth() {
+	
+	return mLenth; 
+};
+
+double Rectangle::getWidth() { 
+	
+	return mWidth; 
+};
+
+double Rectangle::getArea() const {
+	
+	return mLenth * mWidth; 
+};
+
+double Rectangle::getPerimetr() const { 
+	
+	return 2 * mLenth + 2 * mWidth; 
+};
+
+void Rectangle::binaryInput(std::istream& input) {
+
+	input.read((char*)&mLeftDownPoint.x, 8);
+	input.read((char*)&mLeftDownPoint.y, 8);
+	input.read((char*)&mLenth, 8);
+	input.read((char*)&mWidth, 8);
+}
+
+
+void Rectangle::input(std::istream& input) {
+
+	input >> mLeftDownPoint;
+	input >> mLenth;
+	input >> mWidth;
+}
+
+void Rectangle::print() {
 
 	object::print();
 
@@ -119,22 +213,16 @@ void rectangle::print() const {
 	std::cout << "width = " << mWidth << std::endl;
 
 
-	vector2D leftUpPoint;
-	leftUpPoint.x = mLeftDownPoint.x;
-	leftUpPoint.y = mLeftDownPoint.y + mWidth;
-	line ab{ "vector AB", 1, mLeftDownPoint, leftUpPoint };
+	vector2D leftUpPoint = {mLeftDownPoint.x, mLeftDownPoint.y + mWidth};
+	Line ab{ "vector AB", 1, mLeftDownPoint, leftUpPoint };
 
-	vector2D rightUpPoint;
-	rightUpPoint.x = mLeftDownPoint.x + mLenth;
-	rightUpPoint.y = mLeftDownPoint.y + mWidth;
-	line bc{ "vector BC", 2, leftUpPoint, rightUpPoint };
+	vector2D rightUpPoint = {mLeftDownPoint.x + mLenth, mLeftDownPoint.y + mWidth};
+	Line bc{ "vector BC", 2, leftUpPoint, rightUpPoint };
 
-	vector2D rightDownPoint;
-	rightDownPoint.x = mLeftDownPoint.x + mLenth;
-	rightDownPoint.y = mLeftDownPoint.y;
-	line cd{"vector CD", 3, rightUpPoint, rightDownPoint};
+	vector2D rightDownPoint = {mLeftDownPoint.x + mLenth, mLeftDownPoint.y};
+	Line cd{"vector CD", 3, rightUpPoint, rightDownPoint};
 
-	line da{ "vector DA", 4, rightDownPoint, mLeftDownPoint };
+	Line da{ "vector DA", 4, rightDownPoint, mLeftDownPoint };
 	
 	ab.print();
 	bc.print();
@@ -148,85 +236,142 @@ void rectangle::print() const {
 }
 
 
-circle::circle(const std::string& name_, const int id_, const vector2D& center_, const double radius_) 
-	: object(name_, id_), mCenter(center_), mRadius(radius_) {
+Circle::Circle(const std::string& name, const int id, const vector2D& center, const double radius) 
+	: object(name, id), mCenter(center), mRadius(radius) {
 
 }
 
-void circle::print() const {
+void Circle::setCenter(const vector2D& center) { 
+	
+	mCenter = center; 
+};
 
-	std::vector<vector2D> arrOfPoints;
+void Circle::setRadius(const double radius) { 
+	
+	mRadius = radius;
+};
+
+vector2D Circle::getCenter() const { 
+	
+	return mCenter; 
+};
+
+double Circle::getRadius() const {
+	
+	return mRadius; 
+};
+
+double Circle::getArea() const {
 
 	const double Pi = 3.141592653589793;
+	return Pi * mRadius * mRadius;
+};
 
-	vector2D tmpPoint;
+void Circle::binaryInput(std::istream& input) {
 
-	for (int i = 0; i < 360; i++) {
+	input.read((char*)&mCenter.x, 8);
+	input.read((char*)&mCenter.y, 8);
+	input.read((char*)&mRadius, 8);
+}
 
-		tmpPoint.x = mCenter.x + mRadius * cos(i * Pi / 180);
-		tmpPoint.y = mCenter.y + mRadius * sin(i * Pi / 180);
+void Circle::input(std::istream& input) {
 
-		arrOfPoints.push_back(tmpPoint);
+	input >> mCenter;
+	input >> mRadius;
+}
+
+std::vector<Line> Circle::createLines() {
+
+	std::vector<vector2D> points;
+
+	int countOfpoints = 360;
+	const double Pi = 3.141592653589793;
+	double increment = 2 * Pi / countOfpoints;
+
+	for (double i = 0; i < 2 * Pi; i += increment) {
+
+		vector2D point = { mCenter.x + mRadius * cos(i), mCenter.y + mRadius * sin(i) };
+		points.push_back(point);
 	}
 
-	std::vector<line> arrOfvector;
+	std::vector<Line> lines;
+	std::vector<Line> line;
+	for (int i = 0; i < 359; i++){
 
-	line tmpVector;
-
-	for (int i = 0; i < 359; i++) {
-
-		tmpVector.setName("vector");
-		tmpVector.setIndex(i);
-		tmpVector.setStart(arrOfPoints[i]);
-		tmpVector.setEnd(arrOfPoints[i + 1]);
-
-		arrOfvector.push_back(tmpVector);
+		Line line("vector", i, points[i], points[i + 1]);
+		lines.push_back(line);
 	}
+	return lines;
+}
+
+void Circle::print() {
 
 	object::print();
-
 	std::cout << "Center = " << mCenter << std::endl;
 	std::cout << "radius = " << mRadius << std::endl;
 	std::cout << "area = " << getArea() << std::endl;
 
-	for (int i = 0; i < arrOfPoints.size() - 1; i++) {
-		arrOfvector[i].print();
+	std::vector<Line> lines = createLines();
+	for (int i = 0; i < lines.size() - 1; i++) {
+		lines[i].print();
 	}
 
 }
 
-polyline::polyline() {
 
-}
-
-polyline::polyline(const std::string& name_, const int id_, std::vector<vector2D> arrOfPoints_)
-	: object(name_, id_) 
+Polyline::Polyline(const std::string& name, const int id, const std::vector<vector2D>& points)
+	: object(name, id), mPoints(points) 
 {
-	for (int i = 0; i < arrOfPoints_.size(); i++)
-		Points.push_back(arrOfPoints_[i]);
+
 }
 
-void polyline::print() const {
+void Polyline::binaryInput(std::istream& input) {
+	int countOfPoints;
+	input.read((char*)&countOfPoints, 4);
+		
+	for (int i = 0; i < countOfPoints; i++) {
+
+		vector2D point;
+		input.read((char*)&point.x, 8);
+		input.read((char*)&point.y, 8);
+		mPoints.push_back(point);
+	}
+}
+
+void Polyline::input(std::istream& input) {
+
+	int countOfPoints;
+	input >> countOfPoints;
+
+	for (int i = 0; i < countOfPoints; i++) {
+
+		vector2D point;
+
+		input >> point;
+		mPoints.push_back(point);
+	}
+}
+
+void Polyline::createLines(std::vector<Line>& lines) 
+{
+	
+	for (int i = 0; i < mPoints.size() - 1; i++) {
+
+		Line line("vector", i, mPoints[i], mPoints[i + 1]);
+		lines.push_back(line);
+	}
+}
+
+void Polyline::print() {
 
 	object::print();
 
-	std::cout << "count of points " << Points.size() << std::endl;
+	std::vector<Line> lines;
+	createLines(lines);
 
-	std::vector<line> arrOfVectors;
-	line tmpVector;
+	std::cout << "count of points " << mPoints.size() << std::endl;
 
-	for (int i = 0; i < Points.size() - 1; i++) {
-
-		tmpVector.setName("vector");
-		tmpVector.setIndex(i);
-		tmpVector.setStart(Points[i]);
-		tmpVector.setEnd(Points[i + 1]);
-
-		arrOfVectors.push_back(tmpVector);
+	for (int i = 0; i < lines.size(); i++) {
+		lines[i].print();
 	}
-
-	for (int i = 0; i < arrOfVectors.size(); i++) {
-		arrOfVectors[i].print();
-	}
-
 }

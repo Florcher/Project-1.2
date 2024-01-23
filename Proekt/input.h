@@ -10,123 +10,105 @@
 #include <vector>
 #include "objectFactory.h"
 #include <stdio.h>
-#include "inputChoice.h"
-#include "inputObject.h"
 
 class input {
-
 public:
 
-	void inputOf(std::istream& input, const int countOfObject, object** myObject) {
+	void inputOf(std::istream& input, std::vector<object*>& objects) {
+
+		int countOfObject_;
+		input >> countOfObject_;
 
 		objectFactory factory;
-		inputBuffer inputObject;
+		std::string name;
+		int id;
 
-		for (int i = 0; i < countOfObject; i++) {
-
-			inputObject.input(input);
-			factory.createObject(inputObject, myObject, i);
+		for (int i = 0; i < countOfObject_; i++) {
+			input >> name;
+			input >> id;
+			auto object = factory.createObject(id);
+			object->setName(name);
+			object->setId(id);
+			object->input(input);
+			objects.push_back(object);
 		}
-
 	}
 
-	virtual void inputCountOfobject(int& iterator) {
+	virtual void inputObject(std::vector<object*>& myObject) {
 
 	}
-
-	virtual void inputObject(object** myObject, const int& countOfObject) {
-
-	}
-
-
 };
 
-struct inputOfFile : public input {
 
+struct inputOfFile : public input {
 public:
 
-	
+	void inputObject(std::vector<object*>&  myObject) override {
 
-	void inputObject(object** myObject, const int& countOfObject) override {
-
-		std::ifstream input;
+		std::ifstream Input;
 
 		std::string path = "file.txt";
-		input.open(path);
+		Input.open(path);
 
-		int countOfObject_;
-		input >> countOfObject_;
+		input::inputOf(Input, myObject);
 
-		input::inputOf(input, countOfObject, myObject);
-
-		input.close();
-	}
-	
-	void inputCountOfobject(int& countOfObject) override {
-
-		std::ifstream input;
-
-		std::string path = "file.txt";
-		input.open(path);
-
-		int countOfObject_;
-		input >> countOfObject_;
-		countOfObject = countOfObject_;
-
-		input.close();
+		Input.close();
 	}
 
 };
 
 struct inputOfConsole : public input {
-
 public:
 
-
-	void inputObject(object** myObject, const int& countOfObject) override {
+	void inputObject(std::vector<object*>& myObject) override {
 
 		std::string path = "file1.txt";
 
-		input::inputOf(std::cin, countOfObject, myObject);
-	}
-
-	void inputCountOfobject(int& countOfObject) override {
-
-		int countOfObject_;
-		std::cin >> countOfObject_;
-		countOfObject = countOfObject_;
+		input::inputOf(std::cin, myObject);
 	}
 };
+
 
 struct inputOfBinaryFile : public input {
 
 
-	void inputObject(object** myObject, const int& countOfObject) override {
+	void inputObject(std::vector<object*>& myObject) override {
 
-		inputBinaryBuffer inputBinary;
-		objectFactory binarryFactor;
+		objectFactory binarryFactory;
 
-		int countOfObject_;
+		int countOfObject;
 		std::ifstream fin("file2.txt", std::ios_base::binary);
-		fin.read((char*)&countOfObject_, 4);
+		fin.read((char*)&countOfObject, 4);
 
 		for (int i = 0; i < countOfObject; i++) {
 
-			inputBinary.input(fin);
-			binarryFactor.createObject(inputBinary, myObject, i);
+			std::string name;
+			int id;
 
+			std::vector<char> sym;
+			sym.push_back('A');
+			int iterator = 0;
+			while (sym[iterator] != '\0') {
+				char tmpSym;
+				iterator++;
+				fin.read((char*)&tmpSym, 1);
+				sym.push_back(tmpSym);
+			}
+
+			for (int i = 1; i < iterator; i++) {
+				name.push_back(sym[i]);
+			};
+
+			fin.read((char*)&id, 4);
+
+			auto object = binarryFactory.createObject(id);
+			object->setName(name);
+			object->setId(id);
+			object->binaryInput(fin);
+			myObject.push_back(object);
 		}
-		
-		
+
 	}
-
-	void inputCountOfobject(int& countOfObject) override {
-
-		std::ifstream fin("file2.txt", std::ios_base::binary);
-		fin.read((char*)&countOfObject, 4);
-	}
-
 };
-
 
 #endif __INPUT_H__

@@ -11,9 +11,8 @@ struct vector2D {
 	friend std::ostream& operator<< (std::ostream&, const vector2D&);
 	friend std::istream& operator>> (std::istream&, vector2D&);
 
-	const vector2D& operator=(const vector2D&);
-	vector2D& operator+(const vector2D&);
-	vector2D& operator-(const vector2D&);
+	vector2D operator+(const vector2D&);
+	vector2D operator-(const vector2D&);
 
 	double x = 0;
 	double y = 0;
@@ -21,47 +20,47 @@ struct vector2D {
 
 
 class object {
-
 public:
 
-	object() {};
-	object(const std::string& name_, const int id_) { mName = name_; id = id_; };
+	object() = default;
+	object(const std::string& name, const int id);
 	virtual ~object() {};
 
-	virtual void print() const { std::cout << mName << std::endl << id << std::endl; };
+	virtual void binaryInput(std::istream& input);
+	virtual void input(std::istream& input);
+	virtual void print();
 
-	void setName(const std::string& name_) { mName = name_; };
-	void setIndex(const int id_) { id = id_; };
+	void setName(const std::string& name);
+	void setId(const int id);
 
-    std::string getName() const { return mName; };
-	int getindex() const { return id; };
+    std::string getName() const;
+	int getindex() const;
 
 private:
 
 	std::string mName;
-	int id;
+	int mId;
 };
 
 
-class line : public object{
-
+class Line : public object{
 public:
 
-	line();
-    line(const std::string&, const int, const vector2D&, const vector2D&);
-	line(const line&);
-	const line& operator=(const line&);
-	~line() {};
+	Line() = default;
+    Line(const std::string& name, const int id, const vector2D& stat, const vector2D& end);
+	~Line() {};
 
-	void setStart(const vector2D& start) { this->mStart = start; };
-	void setEnd(const vector2D& end) { this->mEnd = end; };
+	void setStart(const vector2D& start);
+	void setEnd(const vector2D& end);
 
-	vector2D getStart() const { return mStart; };
-	vector2D getEnd() const { return mEnd; };
+	vector2D getStart() const;
+	vector2D getEnd() const ;
 
-	double getModul() const;
+	double getLenth();
 
-	void print() const override;
+	void binaryInput(std::istream& input) override;
+	void input(std::istream& input) override;
+	void print() override;
 
 private:
 
@@ -69,27 +68,29 @@ private:
 };
 
 
-class rectangle : public object {
+class Rectangle : public object {
 
 public:
 
-	rectangle() {};
-	rectangle(const std::string&, const int, const vector2D&, const double, const double);
-	~rectangle() {};
+	Rectangle() = default;
+	Rectangle(const std::string& name, const int id, const vector2D& leftDownPoint, const double lenth, const double width);
+	~Rectangle() {};
 
 
-	void setLeftDownPoint(const vector2D& vector2D) { mLeftDownPoint = vector2D; };
-	void setLenth(const int& lenth_) { mLenth = lenth_; };
-	void setWidth(const int& width_) { mWidth = width_; };
+	void setLeftDownPoint(const vector2D& vector2D);
+	void setLenth(const int& lenth_);
+	void setWidth(const int& width_);
 
-	vector2D getLeftDownPoint() { return mLeftDownPoint; };
-	double getLenth() { return mLenth; };
-	double getWidth() { return mWidth; };
+	vector2D getLeftDownPoint();
+	double getLenth();
+	double getWidth();
 
-	double getArea() const { return mLenth * mWidth; };
-	double getPerimetr() const { return 2 * mLenth + 2 * mWidth; };
+	double getArea() const;
+	double getPerimetr() const;
 
-	void print() const override;
+	void binaryInput(std::istream& input) override;
+	void input(std::istream& input) override;
+	void print() override;
 
 private:
 
@@ -99,42 +100,45 @@ private:
 };
 
 
-class circle : public object {
-
+class Circle : public object {
 public:
 
-	circle() {};
-	circle(const std::string&, const int, const vector2D&, const double);
+	Circle() = default;
+	Circle(const std::string& name, const int id, const vector2D& center, const double radius);
 
-	void setCenter(const vector2D& center_) { mCenter = center_; };
-	void setRadius(const double radius_) { mRadius = radius_; };
+	void setCenter(const vector2D& center_);
+	void setRadius(const double radius_);
 
-	vector2D getCenter() const { return mCenter; };
-	double getRadius() const { return mRadius; };
+	vector2D getCenter() const;
+	double getRadius() const;
 
-	double getArea() const { return 3.141592653589793 * mRadius * mRadius; };
-
-	void print() const override;
+	double getArea() const;
+	 
+	void binaryInput(std::istream& input) override;
+	void input(std::istream& input) override;
+	void print() override;
 
 private:
 
 	vector2D mCenter;
 	double mRadius;
+	std::vector<Line> createLines();
 };
 
-class polyline : public object {
-
+class Polyline : public object {
 public:
 
-	polyline();
-	polyline(const std::string&, const int, std::vector<vector2D>);
+	Polyline() = default;
+	Polyline(const std::string& name, const int id, const std::vector<vector2D>& points);
   	
-	void print() const override;
+	void binaryInput(std::istream& input) override;
+	void input(std::istream& input) override;
+	void print() override;
 
 private:
 
-	std::vector<vector2D> Points;
-
+	std::vector<vector2D> mPoints;
+	void createLines(std::vector<Line>& lines);
 };
 
 #endif __PROEKT_H_
